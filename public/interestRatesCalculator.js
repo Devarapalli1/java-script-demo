@@ -34,9 +34,13 @@ class InterestRates {
     }
 }
 
-let i1 = new InterestRates(6184, 5)
-console.log(i1.annualRate);
-console.log(i1.calculateCompoundedDailyInterest(24))
-console.log(i1.calculateEffectiveInterestRate(365))
-console.log(i1.calculateMonthlyMortageRate(12));
-console.log(i1.roundOff(2.336));
+// let i1 = new InterestRates(6184, 5)
+// console.log(i1.annualRate);
+// console.log(i1.calculateCompoundedDailyInterest(24))
+// console.log(i1.calculateEffectiveInterestRate(365))
+// console.log(i1.calculateMonthlyMortageRate(12));
+// console.log(i1.roundOff(2.336));
+
+// export default {
+//     InterestRates
+// };

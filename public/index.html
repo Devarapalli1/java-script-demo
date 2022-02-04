@@ -6,27 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/index-style.css" rel="stylesheet">
+    <script src="./interestFormGenerator.js"></script>
     <title>Result</title>
 </head>
 
 <body>
     <h1>Amortization schedule</h1>
-    <form>
-        <label>Loan Amount</label>
-        <input type="number" min=0 step="any" required><br>
-        <label>Term</label>
-        <input type="number" min=1 required><br>
-        <label>Annual interest rate</label>
-        <input type="number" required><br>
-        <label>Disbursement date</label>
-        <input type="date" required><br>
+    <form onsubmit="return displaySchedule()">
+        <label for="loanAmount">Loan Amount</label>
+        <input type=" number" id="loanAmount" min=0 step="any" required><br>
+        <label for="termPeriod">Term</label>
+        <input type="number" id="termPeriod" min=1 required><br>
+        <label for="annualRate">Annual interest rate</label>
+        <input type="number" id="annualRate" required><br>
+        <label for="disDate">Disbursement date</label>
+        <input type="date" id="disDate" required><br>
         <label>Payment Start Date</label>
-        <input type="number" placeholder="MM" min=1 max=12 required>
-        <input type="number" placeholder="DD" min=1 max=28 required>
-        <input type="number" placeholder="YYYY" min=0 max=9999 required><br>
+        <input type="number" id="month" placeholder="MM" min=1 max=12 required>
+        <input type="number" id="day" placeholder="DD" min=1 max=28 required>
+        <input type="number" id="year" placeholder="YYYY" min=0 max=9999 required><br>
         <input type="submit">
     </form>
     <!-- <button id="display" onclick="displaySchedule()">Show</button> -->
+    <div id="end">
+
+    </div>
 </body>
 
 </html>

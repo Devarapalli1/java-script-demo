@@ -1,13 +1,10 @@
 const MONTHS = 12;
-const http = require('http');
-const port = 8080;
-const fs = require('fs');
 var principalAmount = 6184;
 var interestRate = 0.05;
 var terms = 12;
 distursementDate = "07/12/2021";
 startDate = "08/05/2021";
-numberOfPayments = 12
+numberOfPayments = 12;
 
 
 function calculateDays(startDate, endDate) {
@@ -98,36 +95,34 @@ function htmlContent() {
     html = html + "</table>";
     return html;
 }
+htmlContent();
 
 function displaySchedule() {
-    console.log("from click function")
+    loanAmount = document.getElementById("loanAmount").value;
+    period = document.getElementById("termPeriod").value;
+    annualRate = document.getElementById("annualRate").value;
+    disDate = document.getElementById("disDate").value;
+    month = document.getElementById("month").value;
+    day = document.getElementById("day").value;
+    year = document.getElementById("year").value;
+    distursementDate = disDate;
+    startDate = month + "/" + day + "/" + year;
+    numberOfPayments = Number(period);
+    principalAmount = Number(loanAmount);
+    interestRate = Number(interestRate / 100);
+    document.getElementById("end").innerHTML = htmlContent();
+    return false
 }
 
-module.exports = {
-    calculateDays,
-    calculateMonthlyMortagePayment,
-    htmlContent,
-    addth,
-    addtd,
-    report,
-    interestCalculator,
-    calculateMonthlyMortagePayment,
+function isLeapYear(year) {
+    return new Date(year, 1, 29).getDate() === 29;
 }
 
-// const server = http.createServer(function (req, res) {
-//     switch (req.url) {
-//         case ("/"):
-//             res.writeHead(200, {
-//                 'Content-Type': 'text/html'
-//             });
-//             res.write(htmlContent());
-//     }
-// })
+function range(start, end) {
+    return Array(end - start + 1).fill().map((_, idx) => start + idx)
+}
 
-// server.listen(port, function (err) {
-//     if (err) {
-//         console.log("Problem with", err);
-//     } else {
-//         console.log("Server is listening on port ", port)
-//     }
-// });
+function isLeap(startYear, endYear) {
+    arr = range(startYear, endYear);
+    return arr.some(isLeapYear);
+}

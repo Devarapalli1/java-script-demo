@@ -19,3 +19,17 @@ input {
   height: 25px;
   margin: 10px;
 }
+div#end {
+  margin-left: 30%;
+}
+#end tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#end th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04aa6d;
+  color: white;
+}
