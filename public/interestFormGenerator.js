@@ -73,6 +73,54 @@ class MonthlyMortage {
         let interest = (startBalance * (1 + annualRate / 12) ** (12 * noOFdays / this.days)) - startBalance;
         return this.roundOff(interest);
     }
+
+    schedule(disDate, sDate, term, rate, calculateDays, daysInThisMonth) {
+        let result = []
+        disDate = new Date(disDate);
+        sDate = new Date(sDate);
+        term = term;
+        rate = rate;
+        let endDate = new Date(sDate);
+        endDate.setMonth(endDate.getMonth() + term);
+        let principal = this.principalAmount;
+        let totalInterest = 0;
+        let totalPrincipal = 0;
+        let monthlyPayment = this.calculateMonthlyMortageRate();
+        let noOfDays = calculateDays(disDate, sDate);
+        let noOfDaysInThisMonth = daysInThisMonth(disDate);
+        let differnceBtWdays = noOfDaysInThisMonth - noOfDays;
+        let startBalance = principal;
+        let endBalance = principal;
+        result.push(["payment date", "noOfdays", "start-balance", "Principal", "Interest", "monthP", "end-balance"]);
+        if (differnceBtWdays < 0) {
+            differnceBtWdays = 0 - differnceBtWdays;
+            monthlyPayment += this.roundOff(this.calculateMonthlyInterestForCompoundedDaily(principal, rate, differnceBtWdays) / term);
+        } else if (differnceBtWdays > 0) {
+            monthlyPayment -= this.roundOff(this.calculateMonthlyInterestForCompoundedDaily(principal, rate, differnceBtWdays) / term);
+        }
+        monthlyPayment = this.roundOff(monthlyPayment)
+        console.log(monthlyPayment)
+        for (let period = 0; period < term; period++) {
+            let paymentDate = (sDate.getMonth() + 1) + "/" + sDate.getDate() + "/" + (sDate.getFullYear());
+            let monthlyInterest = this.calculateMonthlyInterestForCompoundedDaily(startBalance, rate, noOfDays);
+
+            totalInterest += monthlyInterest;
+            if (period == term - 1) {
+                monthlyPayment = this.roundOff(monthlyInterest + endBalance);
+            }
+            let monthlyPrincipal = this.roundOff(monthlyPayment - monthlyInterest);
+            totalPrincipal += monthlyPrincipal;
+            endBalance = this.roundOff(startBalance - monthlyPrincipal);
+            console.log(paymentDate, noOfDays, startBalance, monthlyPrincipal, monthlyInterest, monthlyPayment, endBalance)
+            result.push([paymentDate, noOfDays, startBalance, monthlyPrincipal, monthlyInterest, monthlyPayment, endBalance])
+            noOfDays = daysInThisMonth(sDate);
+            sDate.setMonth(sDate.getMonth() + 1);
+            startBalance = endBalance;
+        }
+        result.push(["", "", "Total", this.roundOff(totalPrincipal), this.roundOff(totalInterest), this.roundOff(totalPrincipal + totalInterest), ""])
+        console.log("totalPrincipal:-", this.roundOff(totalPrincipal), this.roundOff(totalInterest), this.roundOff(totalPrincipal + totalInterest));
+        return result;
+    }
 }
 
 class InterestConversion {
@@ -115,66 +163,21 @@ function daysInThisMonth(date) {
     return Math.round(new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate());
 }
 
-function roundOff(value) {
-    let round_to = 10 ** ROUND;
-    return Math.round(value * round_to) / round_to;
-}
-
 function schedule(loan, disDate, sDate, term, rate) {
-    result = []
-    disDate = new Date(disDate);
-    sDate = new Date(sDate);
-    term = term;
-    rate = rate;
-    principal = loan;
-    let totalInterest = 0;
-    let totalPrincipal = 0;
     let endDate = new Date(sDate);
     endDate.setMonth(endDate.getMonth() + term);
     let leap = new Leap(sDate, endDate);
     let isLeap = leap.isLeapPresent();
-    // console.log(isLeap)
+    if (isLeap) {
+        dayCount = 366;
+    } else {
+        dayCount = 355;
+    }
     let interestConversion = new InterestConversion(rate);
     nominalInterest = interestConversion.nominalAnnualInterest(365, 12);
-    mortage = new MonthlyMortage(principal, nominalInterest, term, isLeap);
+    let mortage = new MonthlyMortage(loan, nominalInterest, term, isLeap);
     monthlyPayment = mortage.calculateMonthlyMortageRate();
-    // console.log(monthlyPayment)
-    noOfDays = calculateDays(disDate, sDate);
-    // console.log(noOfDays);
-    noOfDaysInThisMonth = daysInThisMonth(disDate);
-    differnceBtWdays = noOfDaysInThisMonth - noOfDays;
-    console.log(differnceBtWdays);
-    startBalance = principal;
-    endBalance = principal;
-    result.push(["payment date", "noOfdays", "start-balance", "Principal", "Interest", "monthP", "end-balance"]);
-    if (differnceBtWdays < 0) {
-        monthlyPayment += roundOff(mortage.calculateMonthlyInterestForCompoundedDaily(principal, rate, differnceBtWdays) / term);
-    } else if (differnceBtWdays > 0) {
-        monthlyPayment -= roundOff(mortage.calculateMonthlyInterestForCompoundedDaily(principal, rate, differnceBtWdays) / term);
-    }
-    monthlyPayment = roundOff(monthlyPayment)
-    console.log(monthlyPayment)
-    for (let period = 0; period < term; period++) {
-        paymentDate = (sDate.getMonth() + 1) + "/" + sDate.getDate() + "/" + (sDate.getFullYear());
-        monthlyInterest = mortage.calculateMonthlyInterestForCompoundedDaily(startBalance, rate, noOfDays);
-        // noOfDays = daysInThisMonth(sDate);
-        // sDate.setMonth(sDate.getMonth() + 1);
-        totalInterest += monthlyInterest;
-        if (period == term - 1) {
-            monthlyPayment = roundOff(monthlyInterest + endBalance);
-        }
-        monthlyPrincipal = roundOff(monthlyPayment - monthlyInterest);
-        totalPrincipal += monthlyPrincipal;
-        endBalance = roundOff(startBalance - monthlyPrincipal);
-        console.log(paymentDate, noOfDays, startBalance, monthlyPrincipal, monthlyInterest, monthlyPayment, endBalance)
-        result.push([paymentDate, noOfDays, startBalance, monthlyPrincipal, monthlyInterest, monthlyPayment, endBalance])
-        noOfDays = daysInThisMonth(sDate);
-        sDate.setMonth(sDate.getMonth() + 1);
-        startBalance = endBalance;
-    }
-    result.push(["", "", "Total", roundOff(totalPrincipal), roundOff(totalInterest), roundOff(totalPrincipal + totalInterest), ""])
-    console.log("totalPrincipal:-", roundOff(totalPrincipal), roundOff(totalInterest), roundOff(totalPrincipal + totalInterest));
-    return result;
+    return mortage.schedule(disDate, sDate, term, rate, calculateDays, daysInThisMonth);
 }
 
 function addtd(element) {
