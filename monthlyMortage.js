@@ -47,7 +47,20 @@ class MonthlyMortage {
         return this.roundOff(interest);
     }
 
-    schedule(disDate, sDate, term, rate, calculateDays, daysInThisMonth) {
+    calculateDays(startDate, endDate) {
+        startDate = new Date(startDate);
+        endDate = new Date(endDate);
+        let timeDifference = endDate.getTime() - startDate.getTime();
+        let daysDifference = timeDifference / (1000 * 3600 * 24);
+        return Math.round(daysDifference)
+    }
+
+    daysInThisMonth(date) {
+        var now = new Date(date);
+        return Math.round(new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate());
+    }
+
+    schedule(disDate, sDate, term, rate) {
         let result = []
         disDate = new Date(disDate);
         sDate = new Date(sDate);
@@ -59,8 +72,8 @@ class MonthlyMortage {
         let totalInterest = 0;
         let totalPrincipal = 0;
         let monthlyPayment = this.calculateMonthlyMortageRate();
-        let noOfDays = calculateDays(disDate, sDate);
-        let noOfDaysInThisMonth = daysInThisMonth(disDate);
+        let noOfDays = this.calculateDays(disDate, sDate);
+        let noOfDaysInThisMonth = this.daysInThisMonth(disDate);
         let differnceBtWdays = noOfDaysInThisMonth - noOfDays;
         let startBalance = principal;
         let endBalance = principal;
@@ -85,7 +98,7 @@ class MonthlyMortage {
             endBalance = this.roundOff(startBalance - monthlyPrincipal);
             console.log(paymentDate, noOfDays, startBalance, monthlyPrincipal, monthlyInterest, monthlyPayment, endBalance)
             result.push([paymentDate, noOfDays, startBalance, monthlyPrincipal, monthlyInterest, monthlyPayment, endBalance])
-            noOfDays = daysInThisMonth(sDate);
+            noOfDays = this.daysInThisMonth(sDate);
             sDate.setMonth(sDate.getMonth() + 1);
             startBalance = endBalance;
         }
