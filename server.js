@@ -5,16 +5,13 @@ var bodyParser = require('body-parser');
 var multer = require('multer');
 var upload = multer();
 var interestFormGenerator = require("./public/interestFormGenerator")
-const schedule = interestFormGenerator.schedule;
-const add = interestFormGenerator.add;
-const htmlContent = interestFormGenerator.htmlContent;
+const HTMLTableGenerator = interestFormGenerator.HTMLTableGenerator;
 const leap = require("./Leap");
 const Leap = leap.Leap;
 const monthlyMortage = require("./monthlyMortage");
 const MonthlyMortage = monthlyMortage.MonthlyMortage;
 const interestConversion = require("./InterestConversion");
 const InterestConversion = interestConversion.InterestConversion;
-const compareDates = interestFormGenerator.compareDates;
 const ROUND = 2;
 
 const app = express();
@@ -43,17 +40,11 @@ app.post('/data', function (req, res) {
     let principalAmount = Number(loanAmount);
     let interestRate = Number(annualRate);
     let jsonData;
-    // console.log(req.body);
-    if (compareDates(disbursementDate, startDate)) {
-        jsonData = {
-            'data': htmlContent(principalAmount, disbursementDate, startDate, numberOfPayments, interestRate)
-        }
-    } else {
-        jsonData = {
-            'data': "<h1>Please enter the valid date disbursement Date and Start Date"
-        }
+    let tableContent = new HTMLTableGenerator(principalAmount, disbursementDate, startDate, numberOfPayments, interestRate)
+    let data = tableContent.htmlContent();
+    jsonData = {
+        'data': data
     }
-    // console.log(JSON.stringify(jsonData));
     res.json(jsonData);
 })
 
