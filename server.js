@@ -25,6 +25,9 @@ app.use(bodyParser.urlencoded({
 app.use(upload.array());
 
 app.use(express.static(path.join(__dirname, 'public')))
+app.get("/", function (req, res) {
+    res.sendFile("./public/index.html");
+})
 
 app.post('/data', function (req, res) {
     let loanAmount = req.body["loanAmount"];
@@ -48,4 +51,4 @@ app.post('/data', function (req, res) {
     res.json(jsonData);
 })
 
-app.listen(PORT, () => console.log(`server started on ${PORT}`));
+app.listen(process.env.port || PORT, () => console.log(`server started on ${PORT}`));
