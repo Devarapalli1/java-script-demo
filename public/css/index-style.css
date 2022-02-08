@@ -49,6 +49,7 @@ div#end {
 
 #end td {
   height: 30px;
+  text-align: center;
 }
 
 input[type="submit"] {

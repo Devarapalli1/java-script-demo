@@ -1,8 +1,3 @@
-// const leap = require("./Leap");
-// // const eff = require("./InterestConversion");
-// // const InterestConversion = eff.InterestConversion;
-// const Leap = leap.Leap;
-
 class MonthlyMortage {
     ROUND = 2; // round to 2 decimal places.
 

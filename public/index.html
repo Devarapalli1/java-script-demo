@@ -6,28 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/index-style.css" rel="stylesheet">
-    <script src="./interestFormGenerator.js"></script>
+    <!-- <script src="./interestFormGenerator.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Result</title>
 </head>
 
 <body>
+    <script src="./fetchingData.js" defer></script>
     <h1>Amortization schedule</h1>
-    <form onsubmit="return displaySchedule()">
+    <!--  onsubmit="return displaySchedule()" -->
+    <form onsubmit="return displaySchedule(event)" id="formData" method="POST" action="/data">
         <label for="loanAmount">Loan Amount</label>
-        <input type=" number" id="loanAmount" min=0 step="any" required><br>
+        <input type=" number" id="loanAmount" name="loanAmount" min=0 step="any" required><br>
         <label for="termPeriod">Term</label>
-        <input type="number" id="termPeriod" min=1 required><br>
+        <input type="number" id="termPeriod" name="termPeriod" min=1 required><br>
         <label for="annualRate">Annual interest rate</label>
-        <input type="number" id="annualRate" step="any" required><br>
+        <input type="number" id="annualRate" name="annualRate" step="any" required><br>
         <label for="disDate">Disbursement date</label>
-        <input type="date" id="disDate" required><br>
+        <input type="date" id="disDate" name="disDate" required><br>
         <label>Payment Start Date</label>
         <label class="sDate" for="month"></label>
-        <input type="number" id="month" placeholder="MM" min=1 max=12 required>
+        <input type="number" id="month" name="month" placeholder="MM" min=1 max=12 required>
         <label class="sDate" for="day"></label>
-        <input type="number" id="day" placeholder="DD" min=1 max=28 required>
+        <input type="number" id="day" name="day" placeholder="DD" min=1 max=28 required>
         <label class="sDate" for="year"></label>
-        <input type="number" id="year" placeholder="YYYY" min=0 max=9999 required><br>
+        <input type="number" id="year" name="year" placeholder="YYYY" min=0 max=9999 required><br>
         <input type="submit">
     </form>
     <!-- <button id="display" onclick="displaySchedule()">Show</button> -->

@@ -1,3 +1,9 @@
+// const leap = require("../Leap");
+// const Leap = leap.Leap;
+// const monthlyMortage = require("../monthlyMortage");
+// const MonthlyMortage = monthlyMortage.MonthlyMortage;
+// const interestConversion = require("../InterestConversion");
+// const InterestConversion = interestConversion.InterestConversion;
 const ROUND = 2;
 
 class Leap {
@@ -180,44 +186,62 @@ function schedule(loan, disDate, sDate, term, rate) {
     return mortage.schedule(disDate, sDate, term, rate, calculateDays, daysInThisMonth);
 }
 
-function addtd(element) {
-    return "<td>" + element + "</td>";
-}
+// function addtd(element) {
+//     return "<td>" + element + "</td>";
+// }
 
-function addth(element) {
-    return "<th>" + element + "</th>";
+// function addth(element) {
+//     return "<th>" + element + "</th>";
+// }
+
+function add(element, value) {
+    return `<${value}>` + element + `</${value}>`;
 }
 
 function htmlContent(principalAmount, disDate, startDate, numberOfPayments, rate) {
     arr = schedule(principalAmount, disDate, startDate, numberOfPayments, rate);
     html = "<table><tr>";
-    html = html + arr[0].map(addth).join("");
+    html = html + arr[0].map(function (x) {
+        return add(x, "th")
+    }).join("");
+    // html = html + arr[0].map(addth).join("");
     html = html + "</tr>";
     for (let x of arr.slice(1)) {
         html = html + "<tr>";
-        html = html + x.map(addtd).join("");
+        html = html + x.map(function (ele) {
+            return add(ele, "td")
+        }).join("");
+        // html = html + x.map(addtd).join("");
         html = html + "</tr>";
     }
     html = html + "</table>";
     return html;
 }
 
-function displaySchedule() {
-    let loanAmount = document.getElementById("loanAmount").value;
-    let period = document.getElementById("termPeriod").value;
-    let annualRate = document.getElementById("annualRate").value;
-    let disDate = document.getElementById("disDate").value;
-    let month = document.getElementById("month").value;
-    let day = document.getElementById("day").value;
-    let year = document.getElementById("year").value;
-    let disbursementDate = disDate;
-    let startDate = month + "/" + day + "/" + year;
-    let numberOfPayments = Number(period);
-    let principalAmount = Number(loanAmount);
-    let interestRate = Number(annualRate);
-    console.log(principalAmount, disbursementDate, startDate, numberOfPayments, interestRate)
-    document.getElementById("end").innerHTML = htmlContent(principalAmount, disbursementDate, startDate, numberOfPayments, interestRate);
-    return false
-}
+// function displaySchedule() {
+//     let loanAmount = document.getElementById("loanAmount").value;
+//     let period = document.getElementById("termPeriod").value;
+//     let annualRate = document.getElementById("annualRate").value;
+//     let disDate = document.getElementById("disDate").value;
+//     let month = document.getElementById("month").value;
+//     let day = document.getElementById("day").value;
+//     let year = document.getElementById("year").value;
+//     let disbursementDate = disDate;
+//     let startDate = month + "/" + day + "/" + year;
+//     let numberOfPayments = Number(period);
+//     let principalAmount = Number(loanAmount);
+//     let interestRate = Number(annualRate);
+//     console.log(principalAmount, disbursementDate, startDate, numberOfPayments, interestRate)
+//     document.getElementById("end").innerHTML = htmlContent(principalAmount, disbursementDate, startDate, numberOfPayments, interestRate);
+//     return false
+// }
 
 // schedule(6184, "07/12/2021", "08/05/2021", 12, 5)
+
+module.exports = {
+    calculateDays,
+    daysInThisMonth,
+    schedule,
+    add,
+    htmlContent
+}
