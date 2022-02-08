@@ -51,4 +51,4 @@ app.post('/data', function (req, res) {
     res.json(jsonData);
 })
 
-app.listen(process.env.port || PORT, () => console.log(`server started on ${PORT}`));
+app.listen(process.env.PORT || PORT, () => console.log(`server started on ${PORT}`));
