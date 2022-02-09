@@ -6,12 +6,8 @@ var multer = require('multer');
 var upload = multer();
 var HTMLTableGeneratorFile = require("./HTMLTableGenerator")
 const HTMLTableGenerator = HTMLTableGeneratorFile.HTMLTableGenerator
-const leap = require("./Leap");
-const Leap = leap.Leap;
 const monthlyMortage = require("./monthlyMortage");
 const MonthlyMortage = monthlyMortage.MonthlyMortage;
-const interestConversion = require("./InterestConversion");
-const InterestConversion = interestConversion.InterestConversion;
 const ROUND = 2;
 
 const app = express();
