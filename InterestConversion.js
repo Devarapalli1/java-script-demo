@@ -1,5 +1,6 @@
 class InterestConversion {
     ROUND = 2; // 2 decimals
+
     constructor(annualInterest) {
         this.annualInterest = annualInterest;
     }
@@ -25,7 +26,7 @@ class InterestConversion {
     }
 }
 
-const a = new InterestConversion(5);
+// const a = new InterestConversion(5);
 // console.log(a.nominalAnnualInterest(365, 12));
 module.exports = {
     InterestConversion
