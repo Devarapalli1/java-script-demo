@@ -108,7 +108,7 @@ class MonthlyMortage {
         let differnceBtWdays = noOfDaysInThisMonth - noOfDays;
         let startBalance = principal;
         let endBalance = principal;
-        let extraAmount = this.roundOff(this.calculateMonthlyInterestForCompoundedDaily(principal, this.annualRate, differnceBtWdays) / this.noOfPayments, sDate.getFullYear())
+        let extraAmount = this.roundOff(this.calculateMonthlyInterestForCompoundedDaily(principal, this.annualRate, differnceBtWdays, sDate.getFullYear()))
         result.push(["payment date", "noOfdays", "start-balance", "Principal", "Interest", "monthP", "end-balance"]);
         monthlyPayment = this.extraAddedPrincipal(differnceBtWdays, monthlyPayment, extraAmount);
         monthlyPayment = this.adjustingPrincipalAmount(sDate, monthlyPayment, startBalance, noOfDays);
