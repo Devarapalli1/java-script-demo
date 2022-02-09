@@ -27,13 +27,13 @@ class HTMLTableGenerator {
         let isLeap = leap.isLeapPresent();
         let dayCount;
         if (isLeap) {
-            dayCount = 366;
+            dayCount = 365;
         } else {
             dayCount = 365;
         }
         let interestConversion = new InterestConversion(this.rate);
         let nominalInterest = interestConversion.nominalAnnualInterest(dayCount, 12);
-        let mortage = new MonthlyMortage(this.loan, nominalInterest, this.term, isLeap);
+        let mortage = new MonthlyMortage(this.loan, nominalInterest, this.term);
         let monthlyPayment = mortage.calculateMonthlyMortageRate();
         return mortage.schedule(this.disDate, this.sDate, this.term, this.rate);
     }
@@ -74,9 +74,9 @@ class HTMLTableGenerator {
 // console.log("For 1000 and 06/26/2018 dis")
 // const a = new HTMLTableGenerator(1000, "06/26/2018", "08/15/2018", 12, 12.5)
 // a.schedule()
-// console.log("for 1080 and 12/05/2019 dis")
-// const b = (new HTMLTableGenerator(1080, "12/05/2019", "01/05/2020", 12, 12.5))
-// b.schedule()
+console.log("for 1080 and 12/05/2019 dis")
+const b = (new HTMLTableGenerator(1080, "12/05/2019", "01/05/2020", 12, 11))
+b.schedule()
 // console.log("for 1240 and 11/25/2019 dis")
 // const c = (new HTMLTableGenerator(1240, "11/25/2019", "12/15/2019", 12, 6))
 // c.schedule()
