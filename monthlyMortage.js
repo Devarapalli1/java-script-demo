@@ -74,11 +74,14 @@ class MonthlyMortage {
     lastTermBalanceHandling(sDate, monthlyPayment, term, startBalance, rate, noOfDays) {
         let endBalance = 0;
         let centsDifference = 0;
-        sDate = new Date(sDate)
+        sDate = new Date(sDate);
+        let paymentDate = new Date(sDate)
         let initialDays = noOfDays;
+        let monthlyInterest = 0;
+        let monthlyPrincipal = 0;
         for (let period = 0; period < term; period++) {
-            let monthlyInterest = this.calculateMonthlyInterestForCompoundedDaily(startBalance, rate, noOfDays);
-            let monthlyPrincipal = this.roundOff(monthlyPayment - monthlyInterest);
+            monthlyInterest = this.calculateMonthlyInterestForCompoundedDaily(startBalance, rate, noOfDays);
+            monthlyPrincipal = this.roundOff(monthlyPayment - monthlyInterest);
             endBalance = this.roundOff(startBalance - monthlyPrincipal);
             noOfDays = this.daysInThisMonth(sDate);
             sDate.setMonth(sDate.getMonth() + 1);
@@ -86,12 +89,15 @@ class MonthlyMortage {
         }
         if (endBalance != 0) {
             centsDifference = endBalance * 100 // convert it to  cents
+            console.log("centsDiffernce in cents", centsDifference + " cents")
             if ((Math.abs(centsDifference)) >= term) {
-                centsDifference = centsDifference / 100
-                monthlyPayment = this.roundOff(monthlyPayment + (centsDifference / term));
-                return this.lastTermBalanceHandling(sDate.setMonth(sDate.getMonth() - term), monthlyPayment,
-                    this.principalAmount, rate, initialDays)
+                centsDifference = centsDifference / 100 // convert back to dollars
+                console.log("before recursion", monthlyPayment, "handled", this.roundOff(centsDifference / term))
+                monthlyPayment = this.roundOff(monthlyPayment + this.roundOff(centsDifference / term));
+                return this.lastTermBalanceHandling(paymentDate, monthlyPayment,
+                    term, this.principalAmount, rate, initialDays)
             } else {
+                console.log("base", monthlyPayment)
                 return monthlyPayment;
             }
         } else {
@@ -120,7 +126,7 @@ class MonthlyMortage {
         let extraAmount = this.roundOff(this.calculateMonthlyInterestForCompoundedDaily(principal, rate, differnceBtWdays) / term)
         result.push(["payment date", "noOfdays", "start-balance", "Principal", "Interest", "monthP", "end-balance"]);
         monthlyPayment = this.extraAddedPrincipal(differnceBtWdays, monthlyPayment, extraAmount);
-        console.log("from last term handling", this.lastTermBalanceHandling(sDate, monthlyPayment, term, startBalance, rate, noOfDays))
+        // console.log("from last term handling", this.lastTermBalanceHandling(sDate, monthlyPayment, term, startBalance, rate, noOfDays))
         monthlyPayment = this.lastTermBalanceHandling(sDate, monthlyPayment, term, startBalance, rate, noOfDays);
         for (let period = 0; period < term; period++) {
             let paymentDate = (sDate.getMonth() + 1) + "/" + sDate.getDate() + "/" + (sDate.getFullYear());
