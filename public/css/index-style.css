@@ -58,3 +58,30 @@ input[type="submit"] {
   height: fit-content;
   padding: 0.5em 1em;
 }
+
+@media only screen and (max-width: 600px) {
+  form {
+    margin: 50px 20%;
+  }
+  #end th {
+    padding: 8px;
+  }
+  #end {
+    font-size: x-small;
+  }
+  #end td {
+    height: 20px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  form {
+    margin: 50px 5%;
+  }
+  #end th {
+    padding: 4px;
+  }
+  #end td {
+    height: 15px;
+  }
+}
