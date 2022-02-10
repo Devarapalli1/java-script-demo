@@ -1,6 +1,7 @@
 class MonthlyMortage {
     ROUND = 2; // round to 2 decimal places.
     FORMAT = "MDY"; // Month - Day- Year.
+    PERCENT = 100;
 
     constructor(principalAmount, annualRateCompoundedMonthly, noOfPayments, dateFunctionObj) {
         this.principalAmount = principalAmount;
@@ -22,17 +23,27 @@ class MonthlyMortage {
         return this.roundOff(monthlyMortagePayment);
     }
 
-    dayCount(year) { // Based on Actual/365L
-        if (this.dateFunctionObj.isLeapYear(year)) {
-            this.days = 366
+    // dayCount(year) { // Based on Actual/365L
+    //     if (this.dateFunctionObj.isLeapYear(year)) {
+    //         this.days = 366
+    //     } else {
+    //         this.days = 365
+    //     }
+    // }
+    dayCount(sDate, noOFdays) {
+        let paymentDate = new Date(sDate);
+        let interestPeriodDate = new Date(sDate)
+        interestPeriodDate.setDate(interestPeriodDate.getDate() - noOFdays)
+        if (this.dateFunctionObj.isLeapPresent(interestPeriodDate, paymentDate)) { // Checking for Leap
+            this.days = 366;
         } else {
-            this.days = 365
+            this.days = 365;
         }
     }
 
-    calculateMonthlyInterestForCompoundedDaily(startBalance, annualRate, noOFdays, year) {
-        this.dayCount(year);
-        annualRate = annualRate / 100;
+    calculateMonthlyInterestForCompoundedDaily(startBalance, annualRate, noOFdays, sDate) {
+        this.dayCount(sDate, noOFdays);
+        annualRate = annualRate / this.PERCENT;
         let interest = startBalance * annualRate * noOFdays / this.days;
         return this.roundOff(interest);
     }
@@ -59,8 +70,11 @@ class MonthlyMortage {
         let initialDays = noOfDays;
         let monthlyInterest = 0;
         let monthlyPrincipal = 0;
+
+        //  Calculating End Balances For the given terms
+
         for (let period = 0; period < this.noOfPayments; period++) {
-            monthlyInterest = this.calculateMonthlyInterestForCompoundedDaily(startBalance, this.annualRate, noOfDays, sDate.getFullYear());
+            monthlyInterest = this.calculateMonthlyInterestForCompoundedDaily(startBalance, this.annualRate, noOfDays, sDate);
             monthlyPrincipal = this.roundOff(monthlyPayment - monthlyInterest);
             endBalance = this.roundOff(startBalance - monthlyPrincipal);
             noOfDays = this.dateFunctionObj.daysInThisMonth(sDate);
@@ -108,13 +122,13 @@ class MonthlyMortage {
         let differnceBtWdays = noOfDaysInThisMonth - noOfDays;
         let startBalance = principal;
         let endBalance = principal;
-        let extraAmount = this.roundOff(this.calculateMonthlyInterestForCompoundedDaily(principal, this.annualRate, differnceBtWdays, sDate.getFullYear()))
+        let extraAmount = this.roundOff(this.calculateMonthlyInterestForCompoundedDaily(principal, this.annualRate, differnceBtWdays, sDate))
         result.push(["payment date", "noOfdays", "start-balance", "Principal", "Interest", "monthP", "end-balance"]);
         monthlyPayment = this.extraAddedPrincipal(differnceBtWdays, monthlyPayment, extraAmount);
         monthlyPayment = this.adjustingPrincipalAmount(sDate, monthlyPayment, startBalance, noOfDays);
         for (let period = 0; period < this.noOfPayments; period++) {
             let paymentDate = this.dateFunctionObj.getDateInFormat(sDate, this.FORMAT);
-            let monthlyInterest = this.calculateMonthlyInterestForCompoundedDaily(startBalance, this.annualRate, noOfDays, sDate.getFullYear());
+            let monthlyInterest = this.calculateMonthlyInterestForCompoundedDaily(startBalance, this.annualRate, noOfDays, sDate);
             totalInterest += monthlyInterest;
             if (period == this.noOfPayments - 1) {
                 monthlyPayment = this.roundOff(monthlyInterest + endBalance);

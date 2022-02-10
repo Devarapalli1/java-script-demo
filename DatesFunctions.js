@@ -4,6 +4,18 @@ class DatesFunctions {
         return new Date(year, 1, 29).getDate() === 29;
     }
 
+    isLeapPresent(date1, date2) {
+        date1 = new Date(date1)
+        date2 = new Date(date2)
+        date1.setDate(date1.getDate() + 1)
+        if (this.isLeapYear(date1.getFullYear()) || this.isLeapYear(date2.getFullYear())) {
+            return true
+        } else {
+            return false
+        }
+        // return (this.isLeapYear(date1.getFullYear()) || this.isLeapYear(date2.getFullYear()))
+    }
+
     calculateDaysBetweenDates(startDate, endDate) {
         startDate = new Date(startDate);
         endDate = new Date(endDate);

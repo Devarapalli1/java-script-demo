@@ -55,18 +55,18 @@ class HTMLTableGenerator {
 
 }
 
-// console.log("For 1000 and 06/26/2018 dis")
-// const a = new HTMLTableGenerator(1000, "06/26/2018", "08/15/2018", 12, 12.5)
-// a.schedule()
-// console.log("for 1080 and 12/05/2019 dis")
-// const b = (new HTMLTableGenerator(1080, "12/05/2019", "01/05/2020", 12, 11))
-// b.schedule()
-// console.log("for 1240 and 11/25/2019 dis")
-// const c = (new HTMLTableGenerator(1240, "11/25/2019", "12/15/2019", 12, 6))
-// c.schedule()
-// console.log("for 6184 and 07/12/2021 dis")
-// const d = (new HTMLTableGenerator(6184, "07/12/2021", "08/05/2021", 12, 5))
-// d.schedule()
+console.log("For 1000 and 06/26/2018 dis")
+const a = new HTMLTableGenerator(1000, "06/26/2018", "08/15/2018", 12, 12.5)
+a.schedule()
+console.log("for 1080 and 12/05/2019 dis")
+const b = (new HTMLTableGenerator(1080, "12/05/2019", "01/05/2020", 12, 11))
+b.schedule()
+console.log("for 1240 and 11/25/2019 dis")
+const c = (new HTMLTableGenerator(1240, "11/25/2019", "12/15/2019", 12, 6))
+c.schedule()
+console.log("for 6184 and 07/12/2021 dis")
+const d = (new HTMLTableGenerator(6184, "07/12/2021", "08/05/2021", 12, 5))
+d.schedule()
 module.exports = {
     HTMLTableGenerator
 }
