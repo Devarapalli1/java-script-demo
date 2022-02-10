@@ -22,7 +22,7 @@ app.use(upload.array());
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.get("/", function (req, res) {
-    res.sendFile("./public/index.html");
+    res.status(200).sendFile("./public/index.html");
 })
 
 app.post('/data', function (req, res) {
@@ -47,4 +47,6 @@ app.post('/data', function (req, res) {
     res.json(jsonData);
 })
 
-app.listen(process.env.PORT || PORT, () => console.log(`server started on ${PORT}`));
+var server = app.listen(process.env.PORT || PORT, () => console.log(`server started on ${PORT}`));
+
+module.exports = server;

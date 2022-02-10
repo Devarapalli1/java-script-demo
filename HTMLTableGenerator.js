@@ -13,18 +13,20 @@ class HTMLTableGenerator {
         this.sDate = sDate;
         this.term = term;
         this.rate = rate;
+        this.dateFunObj = new DatesFunctions();
+        this.mortage = new MonthlyMortage(this.loan, this.rate, this.term, this.dateFunObj);
     }
 
     schedule() {
-        let dateFunObj = new DatesFunctions();
-        if (dateFunObj.compareDates(this.disDate, this.sDate) != true) {
+        // let dateFunObj = new DatesFunctions();
+        if (this.dateFunObj.compareDates(this.disDate, this.sDate) != true) {
             return "<h1> Please enter the valid date disbursement Date and Start Date</h1>"
         }
-        let mortage = new MonthlyMortage(this.loan, this.rate, this.term, dateFunObj);
-        let monthlyBasePayment = mortage.calculateBaseMonthlyMortageRate();
+        // let mortage = new MonthlyMortage(this.loan, this.rate, this.term, dateFunObj);
+        let monthlyBasePayment = this.mortage.calculateBaseMonthlyMortageRate();
         console.log("monthlyPayment inside the HTML", monthlyBasePayment) // Testing
         // return mortage.schedule(this.disDate, this.sDate, this.term, this.rate);
-        return mortage.schedule(this.disDate, this.sDate)
+        return this.mortage.schedule(this.disDate, this.sDate)
     }
 
     add(element, value) {

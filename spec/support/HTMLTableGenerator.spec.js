@@ -39,6 +39,11 @@ describe("Testing HTMLTableGenerator class", () => {
             expect(htmlObj.schedule()).toEqual("<h1> Please enter the valid date disbursement Date and Start Date</h1>")
         });
 
+        it("Should return a for given mortage schedule", () => {
+            spyOn(tableObj.mortage, "schedule").and.returnValue("A")
+            expect(tableObj.schedule()).toEqual("A");
+        });
+
     });
 
 });
