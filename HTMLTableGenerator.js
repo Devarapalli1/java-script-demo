@@ -24,7 +24,7 @@ class HTMLTableGenerator {
         }
         // let mortage = new MonthlyMortage(this.loan, this.rate, this.term, dateFunObj);
         let monthlyBasePayment = this.mortage.calculateBaseMonthlyMortageRate();
-        console.log("monthlyPayment inside the HTML", monthlyBasePayment) // Testing
+        // console.log("monthlyPayment inside the HTML", monthlyBasePayment) // Testing
         // return mortage.schedule(this.disDate, this.sDate, this.term, this.rate);
         return this.mortage.schedule(this.disDate, this.sDate)
     }

@@ -107,6 +107,38 @@ describe("Testing monthlyMortage Class ", () => {
             expect(mortage.adjustingPrincipalAmount('01/05/2020', 95.45, 1080, 31)).toEqual(95.45)
         });
 
+        it("Should call the calculateMonthlyInterestForCompoundedDaily ", () => {
+            spyOn(mortage, "calculateMonthlyInterestForCompoundedDaily")
+            mortage.adjustingPrincipalAmount('12/15/2019', 600, 1240, 20)
+            expect(mortage.calculateMonthlyInterestForCompoundedDaily).toHaveBeenCalled()
+        });
+
+        it("Should call the daysInThisMonth ", () => {
+            spyOn(date, "daysInThisMonth")
+            mortage.adjustingPrincipalAmount('12/15/2019', 600, 1240, 20)
+            expect(date.daysInThisMonth).toHaveBeenCalled()
+        });
+
+        it("Should call the addMonth", () => {
+            // mortage = new MonthlyMortage(1080, 11, 12, date);
+            spyOn(date, "addMonth")
+            mortage.adjustingPrincipalAmount('12/15/2019', 600, 1240, 20)
+            expect(date.addMonth).toHaveBeenCalled()
+        });
+
+        it("Should call the adjustingPrincipalAmount one more time", () => {
+            spyOn(mortage, "adjustingPrincipalAmount")
+            mortage.adjustingPrincipalAmount('12/15/2019', 600, 1000, 20)
+            expect(mortage.adjustingPrincipalAmount).toHaveBeenCalledTimes(1)
+        });
+
+        it("Should call the adjustingPrincipalAmount one more time", () => {
+            mortage = new MonthlyMortage(1240, 6, 12, date)
+            spyOn(mortage, "adjustingPrincipalAmount").and.callThrough();
+            mortage.adjustingPrincipalAmount('11/25/2019', 104.68, 1240, 20)
+            expect(mortage.adjustingPrincipalAmount).toHaveBeenCalledTimes(3)
+        });
+
     });
 
 });

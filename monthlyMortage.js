@@ -70,6 +70,7 @@ class MonthlyMortage {
     //  Adjusting the principal amount based on the output (goal Seeker)
 
     adjustingPrincipalAmount(sDate, monthlyPayment, startBalance, noOfDays) {
+        // console.log(sDate, monthlyPayment, startBalance, noOfDays)
         let endBalance = 0;
         let centsDifference = 0;
         sDate = new Date(sDate);
@@ -91,7 +92,8 @@ class MonthlyMortage {
         }
         if (endBalance != 0) {
             centsDifference = endBalance * 100 // convert it to  cents
-            console.log("centsDiffernce in cents", centsDifference + " cents")
+            centsDifference = this.roundOff(centsDifference);
+            // console.log("centsDiffernce in cents", centsDifference + " cents");
 
             // Check Weather the absolute value of endBalance in cents is greater than are equal to term 
             // if greater than do recursion with updating the principal value
@@ -102,7 +104,7 @@ class MonthlyMortage {
                 monthlyPayment = this.roundOff(monthlyPayment + this.roundOff(centsDifference / this.noOfPayments));
                 return this.adjustingPrincipalAmount(paymentDate, monthlyPayment, this.principalAmount, initialDays)
             } else {
-                console.log("base", monthlyPayment)
+                // console.log("base", monthlyPayment)
                 return monthlyPayment;
             }
         } else {
